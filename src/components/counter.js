@@ -1,13 +1,14 @@
 // @flow
 
 import React, { Component } from 'react'
+import Radium from 'radium'
 
 type CounterPropsType = {
   increment: number,
   color?: string,
 }
 
-export default class Counter extends Component {
+class Counter extends Component {
   static defaultProps: {};
   state: Object;
   props: CounterPropsType;
@@ -31,9 +32,11 @@ export default class Counter extends Component {
 
   render() {
     return (
-      <h1 style={{ color: this.props.color, background: 'transparent' }}>
+      <h1 style={[[{ color: 'green' }], [{ color: this.props.color }], [[{color: 'pink'}]]]}>
         Counter ({this.props.increment}): {this.state.counter}
       </h1>
     )
   }
 }
+
+export default Radium(Counter)

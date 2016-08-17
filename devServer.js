@@ -5,21 +5,27 @@ const config = require('./webpack.config')({ dev: true })
 const compression = require('compression')
 const app = express()
 const server = require('http').createServer(app)
-
+const Dashboard = require('webpack-dashboard')
+const DashboardPlugin = require('webpack-dashboard/plugin')
 // const bodyParser = require('body-parser')
 // const path = require('path')
 // const requestProxy = require('express-request-proxy')
 // const io = require('socket.io')(server)
 
 const compiler = webpack(config)
+const dashboard = new Dashboard()
+compiler.apply(new DashboardPlugin(dashboard.setData))
 const port = 3001
 
 app.use(require('webpack-dev-middleware')(compiler, {
   noInfo: true,
   publicPath: config.output.publicPath,
+  quiet: true,
 }))
 
-app.use(require('webpack-hot-middleware')(compiler))
+app.use(require('webpack-hot-middleware')(compiler, {
+  log: () => {}
+}))
 
 app.use(compression({
   threshold: 512,
